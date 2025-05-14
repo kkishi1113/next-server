@@ -2,14 +2,13 @@
 import type React from 'react';
 
 import LinkCardList from './link-card-list';
+import { fetchMetadata } from './actions/fetchMetadata';
 
 export default async function Home() {
   const initialLinks = await getLinks();
 
   return <LinkCardList initialLinks={initialLinks} />;
 }
-
-import { fetchMetadata } from './actions/fetchMetadata';
 
 // Sample data for demonstration
 const SAMPLE_LINKS = [
