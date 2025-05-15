@@ -1,83 +1,16 @@
-'use server';
-import type React from 'react';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
-import LinkCardList from './link-card-list';
-import { fetchMetadata } from './actions/fetchMetadata';
-
-export default async function Home() {
-  const initialLinks = await getLinks();
-
-  return <LinkCardList initialLinks={initialLinks} />;
-}
-
-// Sample data for demonstration
-const SAMPLE_LINKS = [
-  {
-    id: '1',
-    title: 'Next.js Documentation - Learn how to use Next.js',
-    url: 'https://nextjs.org/docs',
-    domain: 'nextjs.org',
-    thumbnail: '/placeholder.svg?height=200&width=300',
-    archived: false,
-  },
-  {
-    id: '2',
-    title: 'Tailwind CSS - A utility-first CSS framework',
-    url: 'https://tailwindcss.com',
-    domain: 'tailwindcss.com',
-    thumbnail: '/placeholder.svg?height=200&width=300',
-    archived: false,
-  },
-  {
-    id: '3',
-    title: 'React - A JavaScript library for building user interfaces',
-    url: 'https://reactjs.org',
-    domain: 'reactjs.org',
-    thumbnail: '/placeholder.svg?height=200&width=300',
-    archived: false,
-  },
-];
-
-interface Link {
-  id: string;
-  title: string;
-  url: string;
-  domain: string;
-  thumbnail: string;
-  archived: boolean;
-}
-
-// Node.js側でOGPを取得し、初期表示に使う
-export async function getLinks(): Promise<Link[]> {
-  let links: Link[] = [];
-
-  try {
-    const res = await fetch('https://api.example.com/links', {
-      cache: 'no-store',
-    });
-
-    if (!res.ok) {
-      throw new Error(`Fetch failed with status ${res.status}`);
-    }
-
-    links = await res.json();
-  } catch (error) {
-    console.error(
-      'リンクの取得に失敗しました。SAMPLE_LINKSを使用します:',
-      error
-    );
-    links = SAMPLE_LINKS;
-  }
-
-  const initialLinks: Link[] = await Promise.all(
-    links.map(async (link) => {
-      const metadata = await fetchMetadata(link.url);
-      return {
-        ...link,
-        thumbnail: metadata.image ?? link.thumbnail,
-      };
-    })
+export default function Home() {
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <h1 className="text-4xl font-bold">Welcome to the Next.js App!</h1>
+      <p className="mt-4 text-lg">
+        This is a simple example of a Next.js application.
+      </p>
+      <Button>
+        <Link href={'/dashboard'}>Go to Dashboard</Link>
+      </Button>
+    </main>
   );
-
-  return initialLinks;
 }
