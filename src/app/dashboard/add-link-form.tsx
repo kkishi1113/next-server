@@ -33,15 +33,6 @@ export function AddLinkFormContainer({ links, setLinks }: AddLinkFormProps) {
     // Split the input by newlines to get multiple URLs
     const urls = newUrls.split(/\n/).filter((url) => url.trim() !== '');
 
-    // const res = await fetch('/api', {
-    //   method: 'POST',
-    //   body: JSON.stringify({ url: urls }),
-    //   headers: { 'Content-Type': 'application/json' },
-    // });
-
-    // const data = await res.json();
-    // console.log(data);
-
     if (urls.length > 0) {
       setIsLoading(true);
 
@@ -78,6 +69,15 @@ export function AddLinkFormContainer({ links, setLinks }: AddLinkFormProps) {
             };
           })
         );
+
+        const res = await fetch('/api', {
+          method: 'POST',
+          body: JSON.stringify({ links: [...newLinks] }),
+          headers: { 'Content-Type': 'application/json' },
+        });
+
+        const data = await res.json();
+        console.log(data);
 
         setLinks([...newLinks, ...links]);
         setNewUrls('');

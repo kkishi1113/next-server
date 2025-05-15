@@ -29,15 +29,17 @@ import {
 
 import Image from 'next/image';
 
+interface Link {
+  id: string;
+  title: string;
+  url: string;
+  domain: string;
+  thumbnail: string;
+  archived: boolean;
+}
+
 interface LinkCardProps {
-  link: {
-    id: string;
-    title: string;
-    url: string;
-    domain: string;
-    thumbnail: string;
-    archived: boolean;
-  };
+  link: Link;
   onArchive: () => void;
   onDelete: () => void;
   isMobile: boolean;
