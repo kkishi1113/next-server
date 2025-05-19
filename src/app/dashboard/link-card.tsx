@@ -3,7 +3,7 @@
 import type React from 'react';
 
 import { useState } from 'react';
-import { Archive, ArchiveX, Globe, Trash2 } from 'lucide-react';
+import { Archive, ArchiveX, Globe, ImageIcon, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -27,7 +27,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 
-import Image from 'next/image';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
 
 interface Link {
   id: string;
@@ -60,13 +60,18 @@ export default function LinkCard({
           isMobile ? 'w-1/3 flex-shrink-0' : 'w-full aspect-video'
         }`}
       >
-        <img
-          src={link.thumbnail || '/placeholder.svg?height=200&width=300'}
-          alt={link.title}
-          width={300}
-          height={200}
-          className="w-full h-full object-cover"
-        />
+        <AspectRatio ratio={16 / 9}>
+          {link.thumbnail !== '' ? (
+            <img
+              // src={link.thumbnail || '/placeholder.svg?height=200&width=300'}
+              src={link.thumbnail}
+              alt={link.title}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <ImageIcon className="w-full h-full bg-muted" />
+          )}
+        </AspectRatio>
       </div>
       <div className={`${isMobile ? 'w-2/3' : ''}`}>
         <CardHeader className="p-4 pb-2">

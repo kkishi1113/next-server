@@ -5,9 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Loader2, Plus } from 'lucide-react';
-
 import { toast } from 'sonner';
-
 import { fetchMetadata } from '../actions/fetchMetadata';
 
 interface Link {
@@ -32,6 +30,7 @@ export function AddLinkFormContainer({ links, setLinks }: AddLinkFormProps) {
     e.preventDefault();
     // Split the input by newlines to get multiple URLs
     const urls = newUrls.split(/\n/).filter((url) => url.trim() !== '');
+    console.log('🍎', urls);
 
     if (urls.length > 0) {
       setIsLoading(true);
@@ -49,7 +48,7 @@ export function AddLinkFormContainer({ links, setLinks }: AddLinkFormProps) {
 
             // Fetch metadata for the URL
             let title = `New page from ${domain}`;
-            let thumbnail = '/placeholder.svg?height=200&width=300';
+            let thumbnail = '';
 
             try {
               const metadata = await fetchMetadata(url);
@@ -70,14 +69,13 @@ export function AddLinkFormContainer({ links, setLinks }: AddLinkFormProps) {
           })
         );
 
-        const res = await fetch('/api', {
+        const res = await fetch('/api/links', {
           method: 'POST',
           body: JSON.stringify({ links: [...newLinks] }),
           headers: { 'Content-Type': 'application/json' },
         });
 
         const data = await res.json();
-        console.log(data);
 
         setLinks([...newLinks, ...links]);
         setNewUrls('');

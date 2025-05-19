@@ -7,6 +7,7 @@ import { Link } from 'lucide-react';
 
 import { LinkCardList } from './link-card-list';
 import { AddLinkFormContainer } from './add-link-form';
+import { Toaster } from '@/components/ui/sonner';
 
 interface Link {
   id: string;
@@ -35,6 +36,7 @@ export default function Dashboard({ initialLinks }: DashboardProps) {
 
       <AddLinkFormContainer links={links} setLinks={setLinks} />
       <LinkCardList links={links} setLinks={setLinks} />
+      <Toaster />
     </main>
   );
 }
