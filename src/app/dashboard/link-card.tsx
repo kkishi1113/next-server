@@ -63,7 +63,6 @@ export default function LinkCard({
         <AspectRatio ratio={16 / 9}>
           {link.thumbnail !== '' ? (
             <img
-              // src={link.thumbnail || '/placeholder.svg?height=200&width=300'}
               src={link.thumbnail}
               alt={link.title}
               className="w-full h-full object-cover"

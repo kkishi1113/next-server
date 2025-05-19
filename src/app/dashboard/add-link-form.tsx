@@ -6,7 +6,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Loader2, Plus } from 'lucide-react';
 import { toast } from 'sonner';
-import { fetchMetadata } from '../actions/fetchMetadata';
 
 interface Link {
   id: string;
@@ -34,59 +33,23 @@ export function AddLinkFormContainer({ links, setLinks }: AddLinkFormProps) {
 
     try {
       setIsLoading(true);
-
-      // const newLinks = await Promise.all(
-      //   urls.map(async (url, index) => {
-      //     // Extract domain from URL
-      //     let domain = '';
-      //     try {
-      //       domain = new URL(url).hostname;
-      //     } catch {
-      //       domain = url;
-      //     }
-
-      //     // Fetch metadata for the URL
-      //     let title = `New page from ${domain}`;
-      //     let thumbnail = '';
-
-      //     try {
-      //       const metadata = await fetchMetadata(url);
-      //       if (metadata.title) title = metadata.title;
-      //       if (metadata.image) thumbnail = metadata.image;
-      //     } catch (error) {
-      //       console.error('Error fetching metadata:', error);
-      //     }
-
-      //     return {
-      //       id: `new-${Date.now()}-${index}`,
-      //       title,
-      //       url,
-      //       domain,
-      //       thumbnail,
-      //       archived: false,
-      //     };
-      //   })
-      // );
-
-      // Fix: 一括で登録したときにDBに登録はできるが、ToasterにErrorがでる。
       const res = await fetch('/api/links', {
         method: 'POST',
         body: JSON.stringify({ urls: urls }),
         headers: { 'Content-Type': 'application/json' },
       });
-      const data = await res.json();
-
-      console.log(data);
 
       const { newLinks }: { newLinks: Link[] } = await res.json();
+      console.log(res);
 
-      setLinks([...newLinks]);
+      setLinks([...links, ...newLinks]);
       setNewUrls('');
 
       toast('Links added successfully', {
         description: `Added ${urls.length} new links to your collection.`,
       });
     } catch (error) {
+      console.error(error);
       toast.error('Error adding links', {
         description:
           'There was a problem processing your links. Please try again.',
