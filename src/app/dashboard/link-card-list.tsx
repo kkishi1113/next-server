@@ -23,21 +23,53 @@ type LinkCardListProps = {
 export function LinkCardList({ links, setLinks }: LinkCardListProps) {
   const isMobile = useIsMobile();
   const [activeTab, setActiveTab] = useState('saved');
-  const toggleArchive = (id: string) => {
-    setLinks(
-      links.map((link) => {
-        if (link.id === id) {
-          const newState = !link.archived;
-          toast(newState ? 'Link archived' : 'Link restored', {
-            description: newState
-              ? 'The link has been moved to archives.'
-              : 'The link has been restored to saved links.',
-          });
-          return { ...link, archived: newState };
-        }
-        return link;
-      })
-    );
+  const toggleArchive = async (id: string) => {
+    console.log('🍎🍎', id);
+    try {
+      const res = await fetch(`/api/links/${id}/archive`, {
+        method: 'PATCH',
+      });
+
+      const data = await res.json();
+
+      setLinks(
+        links.map((link) =>
+          link.id === id
+            ? {
+                ...link,
+                archived: data.archived,
+              }
+            : link
+        )
+      );
+
+      toast(data.archived ? 'Link archived' : 'Link restored', {
+        description: data.archived
+          ? 'The link has been moved to archives.'
+          : 'The link has been restored to saved links.',
+      });
+
+      // await fetch(`/api/links/${id}/archive`, {
+      //   method: 'PATCH',
+      // });
+
+      // setLinks(
+      //   links.map((link) => {
+      //     if (link.id === id) {
+      //       const newState = !link.archived;
+      //       toast(newState ? 'Link archived' : 'Link restored', {
+      //         description: newState
+      //           ? 'The link has been moved to archives.'
+      //           : 'The link has been restored to saved links.',
+      //       });
+      //       return { ...link, archived: newState };
+      //     }
+      //     return link;
+      //   })
+      // );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const deleteLink = (id: string) => {
