@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/tooltip';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -28,6 +29,7 @@ import {
 } from '@/components/ui/dialog';
 
 import { AspectRatio } from '@/components/ui/aspect-ratio';
+import { toast } from 'sonner';
 
 interface Link {
   id: string;
@@ -40,18 +42,59 @@ interface Link {
 
 interface LinkCardProps {
   link: Link;
-  onArchive: () => void;
-  onDelete: () => void;
+  // onArchive: () => void;
+  // onDelete: () => void;
+  setLinks: React.Dispatch<React.SetStateAction<Link[]>>;
   isMobile: boolean;
 }
 
 export default function LinkCard({
   link,
-  onArchive,
-  onDelete,
+  // onArchive,
+  // onDelete,
+  setLinks,
   isMobile,
 }: LinkCardProps) {
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  // const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+
+  const handleToggleArchive = async (id: string) => {
+    console.log('🍎🍎', id);
+    try {
+      const res = await fetch(`/api/links/${id}/archive`, {
+        method: 'PATCH',
+      });
+
+      const data = await res.json();
+
+      // setLinks(
+      //   links.map((link) =>
+      //     link.id === id ? { ...link, archived: data.archived } : link
+      //   )
+      // );
+      setLinks((prevLinks) => [
+        ...prevLinks.filter((prevLink) => prevLink.id !== link.id),
+        { ...link, archived: data.archived },
+      ]);
+
+      toast(data.archived ? 'Link archived' : 'Link restored', {
+        description: data.archived
+          ? 'The link has been moved to archives.'
+          : 'The link has been restored to saved links.',
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDeleteLink = (id: string) => {
+    // setLinks(links.filter((link) => link.id !== id));
+    setLinks((prevLinks) =>
+      prevLinks.filter((prevLink) => prevLink.id !== link.id)
+    );
+    toast('Link deleted', {
+      description: 'The link has been permanently removed.',
+    });
+  };
 
   return (
     <Card className={`overflow-hidden ${isMobile ? 'flex' : ''}`}>
@@ -84,7 +127,7 @@ export default function LinkCard({
                       variant="ghost"
                       size="icon"
                       className="h-8 w-8"
-                      onClick={onArchive}
+                      onClick={() => handleToggleArchive(link.id)}
                     >
                       {link.archived ? (
                         <ArchiveX className="h-4 w-4" />
@@ -100,8 +143,8 @@ export default function LinkCard({
               </TooltipProvider>
 
               <Dialog
-                open={deleteDialogOpen}
-                onOpenChange={setDeleteDialogOpen}
+              // open={deleteDialogOpen}
+              // onOpenChange={setDeleteDialogOpen}
               >
                 <DialogTrigger asChild>
                   <Button
@@ -121,21 +164,26 @@ export default function LinkCard({
                     </DialogDescription>
                   </DialogHeader>
                   <DialogFooter>
-                    <Button
-                      variant="outline"
-                      onClick={() => setDeleteDialogOpen(false)}
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      onClick={() => {
-                        onDelete();
-                        setDeleteDialogOpen(false);
-                      }}
-                    >
-                      Delete
-                    </Button>
+                    <DialogClose asChild>
+                      <Button
+                        variant="outline"
+                        // onClick={() => setDeleteDialogOpen(false)}
+                      >
+                        Cancel
+                      </Button>
+                    </DialogClose>
+                    <DialogClose asChild>
+                      <Button
+                        variant="destructive"
+                        onClick={() => {
+                          handleDeleteLink(link.id);
+                          // onDelete();
+                          // setDeleteDialogOpen(false);
+                        }}
+                      >
+                        Delete
+                      </Button>
+                    </DialogClose>
                   </DialogFooter>
                 </DialogContent>
               </Dialog>

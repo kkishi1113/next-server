@@ -23,61 +23,62 @@ type LinkCardListProps = {
 export function LinkCardList({ links, setLinks }: LinkCardListProps) {
   const isMobile = useIsMobile();
   const [activeTab, setActiveTab] = useState('saved');
-  const toggleArchive = async (id: string) => {
-    console.log('🍎🍎', id);
-    try {
-      const res = await fetch(`/api/links/${id}/archive`, {
-        method: 'PATCH',
-      });
+  // const toggleArchive = async (id: string) => {
+  //   console.log('🍎🍎', id);
+  //   try {
+  //     const res = await fetch(`/api/links/${id}/archive`, {
+  //       method: 'PATCH',
+  //     });
 
-      const data = await res.json();
+  //     const data = await res.json();
 
-      setLinks(
-        links.map((link) =>
-          link.id === id
-            ? {
-                ...link,
-                archived: data.archived,
-              }
-            : link
-        )
-      );
+  //     setLinks(
+  //       links.map((link) =>
+  //         link.id === id
+  //           ? {
+  //               ...link,
+  //               archived: data.archived,
+  //             }
+  //           : link
+  //       )
+  //     );
 
-      toast(data.archived ? 'Link archived' : 'Link restored', {
-        description: data.archived
-          ? 'The link has been moved to archives.'
-          : 'The link has been restored to saved links.',
-      });
+  //     toast(data.archived ? 'Link archived' : 'Link restored', {
+  //       description: data.archived
+  //         ? 'The link has been moved to archives.'
+  //         : 'The link has been restored to saved links.',
+  //     });
 
-      // await fetch(`/api/links/${id}/archive`, {
-      //   method: 'PATCH',
-      // });
+  //     // await fetch(`/api/links/${id}/archive`, {
+  //     //   method: 'PATCH',
+  //     // });
 
-      // setLinks(
-      //   links.map((link) => {
-      //     if (link.id === id) {
-      //       const newState = !link.archived;
-      //       toast(newState ? 'Link archived' : 'Link restored', {
-      //         description: newState
-      //           ? 'The link has been moved to archives.'
-      //           : 'The link has been restored to saved links.',
-      //       });
-      //       return { ...link, archived: newState };
-      //     }
-      //     return link;
-      //   })
-      // );
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //     // setLinks(
+  //     //   links.map((link) => {
+  //     //     if (link.id === id) {
+  //     //       const newState = !link.archived;
+  //     //       toast(newState ? 'Link archived' : 'Link restored', {
+  //     //         description: newState
+  //     //           ? 'The link has been moved to archives.'
+  //     //           : 'The link has been restored to saved links.',
+  //     //       });
+  //     //       return { ...link, archived: newState };
+  //     //     }
+  //     //     return link;
+  //     //   })
+  //     // );
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
-  const deleteLink = (id: string) => {
-    setLinks(links.filter((link) => link.id !== id));
-    toast('Link deleted', {
-      description: 'The link has been permanently removed.',
-    });
-  };
+  // const deleteLink = (id: string) => {
+  //   setLinks(links.filter((link) => link.id !== id));
+  //   toast('Link deleted', {
+  //     description: 'The link has been permanently removed.',
+  //   });
+  // };
+
   const savedLinks = links.filter((link) => !link.archived);
   const archivedLinks = links.filter((link) => link.archived);
   return (
@@ -111,8 +112,9 @@ export function LinkCardList({ links, setLinks }: LinkCardListProps) {
                 <LinkCard
                   key={link.id}
                   link={link}
-                  onArchive={() => toggleArchive(link.id)}
-                  onDelete={() => deleteLink(link.id)}
+                  // onArchive={() => toggleArchive(link.id)}
+                  // onDelete={() => deleteLink(link.id)}
+                  setLinks={setLinks}
                   isMobile={isMobile}
                 />
               ))}
@@ -137,8 +139,9 @@ export function LinkCardList({ links, setLinks }: LinkCardListProps) {
                 <LinkCard
                   key={link.id}
                   link={link}
-                  onArchive={() => toggleArchive(link.id)}
-                  onDelete={() => deleteLink(link.id)}
+                  // onArchive={() => toggleArchive(link.id)}
+                  // onDelete={() => deleteLink(link.id)}
+                  setLinks={setLinks}
                   isMobile={isMobile}
                 />
               ))}
