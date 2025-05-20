@@ -86,14 +86,22 @@ export default function LinkCard({
     }
   };
 
-  const handleDeleteLink = (id: string) => {
-    // setLinks(links.filter((link) => link.id !== id));
-    setLinks((prevLinks) =>
-      prevLinks.filter((prevLink) => prevLink.id !== link.id)
-    );
-    toast('Link deleted', {
-      description: 'The link has been permanently removed.',
-    });
+  const handleDeleteLink = async (id: string) => {
+    try {
+      const res = await fetch(`/api/links/${id}/delete`, {
+        method: 'DELETE',
+      });
+      const data = await res.json();
+      // setLinks(links.filter((link) => link.id !== id));
+      setLinks((prevLinks) =>
+        prevLinks.filter((prevLink) => prevLink.id !== link.id)
+      );
+      toast('Link deleted', {
+        description: 'The link has been permanently removed.',
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
