@@ -67,16 +67,4 @@ export async function fetchLinks(): Promise<Link[]> {
     );
     return SAMPLE_LINKS;
   }
-
-  // const initialLinks: Link[] = await Promise.all(
-  //   links.map(async (link) => {
-  //     const metadata = await fetchMetadata(link.url);
-  //     return {
-  //       ...link,
-  //       thumbnail: metadata.image ?? link.thumbnail,
-  //     };
-  //   })
-  // );
-
-  // return initialLinks;
 }

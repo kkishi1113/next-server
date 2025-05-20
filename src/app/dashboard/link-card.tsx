@@ -42,35 +42,18 @@ interface Link {
 
 interface LinkCardProps {
   link: Link;
-  // onArchive: () => void;
-  // onDelete: () => void;
   setLinks: React.Dispatch<React.SetStateAction<Link[]>>;
   isMobile: boolean;
 }
 
-export default function LinkCard({
-  link,
-  // onArchive,
-  // onDelete,
-  setLinks,
-  isMobile,
-}: LinkCardProps) {
-  // const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-
+export default function LinkCard({ link, setLinks, isMobile }: LinkCardProps) {
   const handleToggleArchive = async (id: string) => {
-    console.log('🍎🍎', id);
     try {
       const res = await fetch(`/api/links/${id}/archive`, {
         method: 'PATCH',
       });
-
       const data = await res.json();
 
-      // setLinks(
-      //   links.map((link) =>
-      //     link.id === id ? { ...link, archived: data.archived } : link
-      //   )
-      // );
       setLinks((prevLinks) => [
         ...prevLinks.filter((prevLink) => prevLink.id !== link.id),
         { ...link, archived: data.archived },
@@ -92,7 +75,7 @@ export default function LinkCard({
         method: 'DELETE',
       });
       const data = await res.json();
-      // setLinks(links.filter((link) => link.id !== id));
+
       setLinks((prevLinks) =>
         prevLinks.filter((prevLink) => prevLink.id !== link.id)
       );
@@ -150,10 +133,7 @@ export default function LinkCard({
                 </Tooltip>
               </TooltipProvider>
 
-              <Dialog
-              // open={deleteDialogOpen}
-              // onOpenChange={setDeleteDialogOpen}
-              >
+              <Dialog>
                 <DialogTrigger asChild>
                   <Button
                     variant="ghost"
@@ -183,11 +163,7 @@ export default function LinkCard({
                     <DialogClose asChild>
                       <Button
                         variant="destructive"
-                        onClick={() => {
-                          handleDeleteLink(link.id);
-                          // onDelete();
-                          // setDeleteDialogOpen(false);
-                        }}
+                        onClick={() => handleDeleteLink(link.id)}
                       >
                         Delete
                       </Button>
