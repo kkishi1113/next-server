@@ -7,7 +7,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Link } from '@/types';
 import { SavedLinks } from './saved-links';
 import { ArchivedLinks } from './archived-links';
-import { NoLinks } from './no-links';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
 type DashboardProps = {
@@ -30,7 +29,6 @@ export default function Dashboard({ initialLinks }: DashboardProps) {
       </header>
 
       <AddLinkFormContainer links={links} setLinks={setLinks} />
-      {/* <LinkCardList links={links} setLinks={setLinks} /> */}
 
       <div className="flex justify-between items-center mb-4">
         <TooltipProvider>
