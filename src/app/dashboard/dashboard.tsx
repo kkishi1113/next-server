@@ -42,18 +42,10 @@ export default function Dashboard({ initialLinks }: DashboardProps) {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="saved" className="mt-0">
-              {savedLinks.length === 0 ? (
-                <NoLinks />
-              ) : (
-                <SavedLinks links={savedLinks} setLinks={setLinks} />
-              )}
+              <SavedLinks links={savedLinks} setLinks={setLinks} />
             </TabsContent>
             <TabsContent value="archived" className="mt-0">
-              {archivedLinks.length === 0 ? (
-                <NoLinks />
-              ) : (
-                <ArchivedLinks links={archivedLinks} setLinks={setLinks} />
-              )}
+              <ArchivedLinks links={archivedLinks} setLinks={setLinks} />
             </TabsContent>
           </Tabs>
         </TooltipProvider>
