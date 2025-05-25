@@ -60,5 +60,47 @@ ToDo:
     details:
       description: URL一括追加の説明
       url: /dashboard
+    status: 完了
+    priority: 高
+  - id: 10
+    title: アーカイブ機能
+    details:
+      description: リンクのアーカイブ
+      url: /dashboard
     status: 未完了
     priority: 高
+  - id: 11
+    title: リンク削除機能
+    details:
+      description: リンクの削除
+      url: /dashboard
+    status: 完了
+    priority: 高
+  - id: 12
+    title: DBの設定
+    details:
+      description: sqlite3の設定
+      url:
+    status: 完了
+    priority: 高
+  - id: 13
+    title: LinkCardドラッグ&ドロップ
+    details:
+      description: LinkCardをドラッグ&ドロップで並べ替え
+      url: /dashboard
+    status: 未完了
+    priority: 低
+  - id: 14
+    title: LinkCardListモバイル対応
+    details:
+      description: LinkCardListモバイル対応
+      url: /dashboard
+    status: 未完了
+    priority: 中
+  - id: 15
+    title: 画面TOPに戻るボタン
+    details:
+      description: 画面TOPに戻るボタン
+      url: /dashboard
+    status: 未完了
+    priority: 中
