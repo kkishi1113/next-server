@@ -1,6 +1,4 @@
 'use client';
-import { Card, CardContent } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { LinkCard } from './link-card';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -20,10 +18,6 @@ type LinkCardListProps = {
 
 export function LinkCardList({ links, setLinks }: LinkCardListProps) {
   const isMobile = useIsMobile();
-  // const [activeTab, setActiveTab] = useState('saved');
-
-  // const savedLinks = links.filter((link) => !link.archived);
-  // const archivedLinks = links.filter((link) => link.archived);
   return (
     <div
       className={`grid gap-4 ${

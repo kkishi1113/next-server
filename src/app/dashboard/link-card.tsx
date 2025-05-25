@@ -1,36 +1,17 @@
 'use client';
 
-import React, { useCallback } from 'react';
-
-import { useState } from 'react';
-import { Archive, ArchiveX, Globe, ImageIcon, Trash2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import React from 'react';
+import { Globe, ImageIcon } from 'lucide-react';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
 } from '@/components/ui/card';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-
 import { AspectRatio } from '@/components/ui/aspect-ratio';
-import { toast } from 'sonner';
 import { Link } from '@/types';
+import { ArchiveTooltip } from './archive-tooltip';
+import { DeleteDialog } from './delete-dialog';
 
 interface LinkCardProps {
   link: Link;
@@ -40,52 +21,6 @@ interface LinkCardProps {
 
 export function LinkCard({ link, setLinks, isMobile }: LinkCardProps) {
   console.log('🍎🍎');
-
-  const handleToggleArchive = useCallback(
-    async (id: string) => {
-      try {
-        const res = await fetch(`/api/links/${id}/archive`, {
-          method: 'PATCH',
-        });
-        const data = await res.json();
-
-        setLinks((prevLinks) => [
-          ...prevLinks.filter((prevLink) => prevLink.id !== link.id),
-          { ...link, archived: data.archived },
-        ]);
-
-        toast(data.archived ? 'Link archived' : 'Link restored', {
-          description: data.archived
-            ? 'The link has been moved to archives.'
-            : 'The link has been restored to saved links.',
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    [setLinks]
-  );
-
-  const handleDeleteLink = useCallback(
-    async (id: string) => {
-      try {
-        const res = await fetch(`/api/links/${id}/delete`, {
-          method: 'DELETE',
-        });
-        const data = await res.json();
-
-        setLinks((prevLinks) =>
-          prevLinks.filter((prevLink) => prevLink.id !== link.id)
-        );
-        toast('Link deleted', {
-          description: 'The link has been permanently removed.',
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    [setLinks]
-  );
 
   return (
     <Card className={`overflow-hidden ${isMobile ? 'flex' : ''}`}>
@@ -112,70 +47,8 @@ export function LinkCard({ link, setLinks, isMobile }: LinkCardProps) {
           <div className="flex items-start justify-between gap-2">
             <h3 className="font-medium line-clamp-2">{link.title}</h3>
             <div className="flex gap-1 flex-shrink-0">
-              {/* <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8"
-                      onClick={() => handleToggleArchive(link.id)}
-                    >
-                      {link.archived ? (
-                        <ArchiveX className="h-4 w-4" />
-                      ) : (
-                        <Archive className="h-4 w-4" />
-                      )}
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    {link.archived ? 'Restore from archive' : 'Move to archive'}
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider> */}
-
-              {/* <Dialog>
-                <DialogTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 text-destructive"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Delete Link</DialogTitle>
-                    <DialogDescription>
-                      Are you sure you want to delete this link? This action
-                      cannot be undone.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <DialogFooter>
-                    <DialogClose asChild>
-                      <Button variant="outline">Cancel</Button>
-                    </DialogClose>
-                    <DialogClose asChild>
-                      <Button
-                        variant="destructive"
-                        onClick={() => handleDeleteLink(link.id)}
-                      >
-                        Delete
-                      </Button>
-                    </DialogClose>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog> */}
-              {/* <DialogTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 text-destructive"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </DialogTrigger> */}
+              <DeleteDialog link={link} setLinks={setLinks} />
+              <ArchiveTooltip link={link} setLinks={setLinks} />
             </div>
           </div>
         </CardHeader>
