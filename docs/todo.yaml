@@ -67,7 +67,7 @@ ToDo:
     details:
       description: リンクのアーカイブ
       url: /dashboard
-    status: 未完了
+    status: 完了
     priority: 高
   - id: 11
     title: リンク削除機能
