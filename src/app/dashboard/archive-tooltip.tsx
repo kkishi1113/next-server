@@ -20,6 +20,10 @@ export function ArchiveTooltip({ link, setLinks }: LinkCardActionsProps) {
       try {
         const res = await fetch(`/api/links/${id}/archive`, {
           method: 'PATCH',
+          body: JSON.stringify({ archived: link.archived }), // 現在の状態をAPIに渡す。
+          headers: {
+            'Content-Type': 'application/josn',
+          },
         });
         const data = await res.json();
 

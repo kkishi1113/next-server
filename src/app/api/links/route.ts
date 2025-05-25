@@ -2,15 +2,6 @@ import { fetchMetadata } from '@/app/actions/fetchMetadata';
 import { openDb } from '@/utils/db';
 import { NextRequest, NextResponse } from 'next/server';
 
-interface Link {
-  id: string;
-  title: string;
-  url: string;
-  domain: string;
-  thumbnail: string;
-  archived: boolean;
-}
-
 export async function GET() {
   try {
     const db = await openDb();
